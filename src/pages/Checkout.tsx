@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -56,6 +56,30 @@ const Checkout = () => {
     },
   });
 
+  // Auto-fill form with user profile data when logged in
+  useEffect(() => {
+    const fetchProfile = async () => {
+      if (user) {
+        const { data: profile } = await supabase
+          .from("profiles")
+          .select("*")
+          .eq("id", user.id)
+          .single();
+
+        if (profile) {
+          form.reset({
+            name: profile.full_name || "",
+            email: profile.email || user.email || "",
+            phone: profile.phone || "",
+            address: profile.address || "",
+            password: "",
+          });
+        }
+      }
+    };
+
+    fetchProfile();
+  }, [user, form]);
   const formatPrice = (price: number) => {
     return new Intl.NumberFormat("en-IN", {
       style: "currency",

@@ -49,6 +49,17 @@ const Footer = () => {
 
         <div className="mt-12 border-t border-border pt-8 text-center text-sm text-muted-foreground">
           <p>&copy; {new Date().getFullYear()} Aarogyam Agencies. All rights reserved.</p>
+          <p className="mt-2">
+            Created By{" "}
+            <a
+              href="https://www.instagram.com/k20ashim"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-medium text-primary hover:underline"
+            >
+              Ashim
+            </a>
+          </p>
         </div>
       </div>
     </footer>
