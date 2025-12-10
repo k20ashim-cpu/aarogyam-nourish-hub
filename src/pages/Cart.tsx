@@ -62,9 +62,9 @@ const Cart = () => {
             <div className="space-y-4 lg:col-span-2">
               {items.map((item) => (
                 <Card key={item.product.id} className="overflow-hidden">
-                  <CardContent className="p-4">
-                    <div className="flex gap-4">
-                      <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-lg bg-muted">
+                  <CardContent className="p-3 sm:p-4">
+                    <div className="flex flex-col gap-3 sm:flex-row sm:gap-4">
+                      <div className="mx-auto h-20 w-20 flex-shrink-0 overflow-hidden rounded-lg bg-muted sm:mx-0 sm:h-24 sm:w-24">
                         {item.product.image_url ? (
                           <img
                             src={item.product.image_url}
@@ -78,7 +78,7 @@ const Cart = () => {
                         )}
                       </div>
 
-                      <div className="flex flex-1 flex-col justify-between">
+                      <div className="flex flex-1 flex-col justify-between text-center sm:text-left">
                         <div>
                           <h3 className="font-display font-semibold">{item.product.name}</h3>
                           <p className="text-sm text-muted-foreground">
@@ -86,7 +86,7 @@ const Cart = () => {
                           </p>
                         </div>
 
-                        <div className="flex items-center justify-between">
+                        <div className="mt-3 flex flex-col items-center gap-3 sm:mt-0 sm:flex-row sm:justify-between">
                           <div className="flex items-center gap-2">
                             <Button
                               variant="outline"
@@ -131,7 +131,7 @@ const Cart = () => {
             {/* Order Summary */}
             <div>
               <Card className="sticky top-24">
-                <CardContent className="p-6">
+                <CardContent className="p-4 sm:p-6">
                   <h2 className="font-display text-xl font-bold">Order Summary</h2>
 
                   <div className="mt-4 space-y-3">
@@ -141,7 +141,7 @@ const Cart = () => {
                     </div>
                     <div className="flex justify-between text-sm">
                       <span className="text-muted-foreground">Delivery</span>
-                      <span className="text-primary">Free</span>
+                      <span className="text-muted-foreground">Based on your location</span>
                     </div>
                   </div>
 
