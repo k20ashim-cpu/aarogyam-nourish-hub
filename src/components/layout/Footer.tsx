@@ -52,7 +52,7 @@ const Footer = () => {
           <p className="mt-2">
             Created By{" "}
             <a
-              href="https://www.instagram.com/k20ashim"
+              href="https://www.instagram.com/ashim143official?igsh=MTNnZGQ3cWJpcm03ZA=="
               target="_blank"
               rel="noopener noreferrer"
               className="font-medium text-primary hover:underline"
