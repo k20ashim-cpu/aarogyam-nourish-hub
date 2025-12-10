@@ -16,7 +16,7 @@ const CategoryFilter = ({ categories, selectedCategory, onSelect }: CategoryFilt
         onClick={() => onSelect("all")}
         className={cn(
           "rounded-full",
-          selectedCategory === "all" && "bg-gradient-warm shadow-warm"
+          selectedCategory === "all" && "bg-gradient-nature shadow-nature"
         )}
       >
         All
@@ -29,7 +29,7 @@ const CategoryFilter = ({ categories, selectedCategory, onSelect }: CategoryFilt
           onClick={() => onSelect(category)}
           className={cn(
             "rounded-full capitalize",
-            selectedCategory === category && "bg-gradient-warm shadow-warm"
+            selectedCategory === category && "bg-gradient-nature shadow-nature"
           )}
         >
           {category}

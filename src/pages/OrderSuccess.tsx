@@ -13,16 +13,17 @@ const OrderSuccess = () => {
       <Header />
       <main className="flex flex-1 items-center justify-center py-12">
         <div className="container max-w-md text-center">
-          <div className="mb-6 inline-flex h-24 w-24 items-center justify-center rounded-full bg-accent/20">
-            <CheckCircle className="h-12 w-12 text-accent" />
+          <div className="mb-6 inline-flex h-24 w-24 items-center justify-center rounded-full bg-primary/20">
+            <CheckCircle className="h-12 w-12 text-primary" />
           </div>
 
           <h1 className="font-display text-3xl font-bold">
-            Order <span className="text-gradient-warm">Confirmed!</span>
+            Order <span className="text-gradient-nature">Confirmed!</span>
           </h1>
 
           <p className="mt-4 text-muted-foreground">
-            Thank you for your order! We're preparing your delicious food and will have it ready soon.
+            Thank you for choosing Aarogyam Agencies! Your order has been placed and 
+            the details have been sent to our team.
           </p>
 
           {orderId && (
@@ -36,7 +37,7 @@ const OrderSuccess = () => {
               <Button variant="outline">Continue Shopping</Button>
             </Link>
             <Link to="/">
-              <Button className="gap-2 bg-gradient-warm shadow-warm">
+              <Button className="gap-2 bg-gradient-nature shadow-nature">
                 Back to Home
                 <ArrowRight className="h-4 w-4" />
               </Button>

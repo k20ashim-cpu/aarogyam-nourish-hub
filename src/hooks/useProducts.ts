@@ -4,9 +4,9 @@ import type { Tables } from "@/integrations/supabase/types";
 
 export type Product = Tables<"products">;
 
-export const useProducts = (category?: string) => {
+export const useProducts = (category?: string, searchQuery?: string) => {
   return useQuery({
-    queryKey: ["products", category],
+    queryKey: ["products", category, searchQuery],
     queryFn: async () => {
       let query = supabase
         .from("products")
@@ -18,7 +18,26 @@ export const useProducts = (category?: string) => {
         query = query.eq("category", category);
       }
 
+      if (searchQuery && searchQuery.trim()) {
+        query = query.or(`name.ilike.%${searchQuery}%,description.ilike.%${searchQuery}%,category.ilike.%${searchQuery}%`);
+      }
+
       const { data, error } = await query;
+
+      if (error) throw error;
+      return data as Product[];
+    },
+  });
+};
+
+export const useAllProducts = () => {
+  return useQuery({
+    queryKey: ["all-products"],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("products")
+        .select("*")
+        .order("created_at", { ascending: false });
 
       if (error) throw error;
       return data as Product[];
