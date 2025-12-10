@@ -1,4 +1,4 @@
-import { Plus, ShoppingCart } from "lucide-react";
+import { Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -23,19 +23,19 @@ const ProductCard = ({ product, index = 0 }: ProductCardProps) => {
   };
 
   const formatPrice = (price: number) => {
-    return new Intl.NumberFormat("en-US", {
+    return new Intl.NumberFormat("en-IN", {
       style: "currency",
-      currency: "USD",
+      currency: "INR",
     }).format(price);
   };
 
   return (
     <Card
       className={cn(
-        "group overflow-hidden border-border/50 shadow-card transition-all duration-300 hover:-translate-y-1 hover:shadow-warm",
+        "group overflow-hidden border-border/50 shadow-card transition-all duration-300 hover:-translate-y-1 hover:shadow-nature",
         "opacity-0 animate-fade-in"
       )}
-      style={{ animationDelay: `${index * 100}ms` }}
+      style={{ animationDelay: `${index * 80}ms` }}
     >
       <div className="relative aspect-square overflow-hidden bg-muted">
         {product.image_url ? (
@@ -45,8 +45,8 @@ const ProductCard = ({ product, index = 0 }: ProductCardProps) => {
             className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
           />
         ) : (
-          <div className="flex h-full w-full items-center justify-center bg-gradient-warm/10">
-            <span className="text-6xl">🍽️</span>
+          <div className="flex h-full w-full items-center justify-center bg-gradient-nature/10">
+            <span className="text-6xl">🌿</span>
           </div>
         )}
 
@@ -70,15 +70,13 @@ const ProductCard = ({ product, index = 0 }: ProductCardProps) => {
       </div>
 
       <CardContent className="p-4">
-        <div className="mb-3 flex items-start justify-between gap-2">
-          <div>
-            <h3 className="font-display font-semibold leading-tight">{product.name}</h3>
-            {product.description && (
-              <p className="mt-1 line-clamp-2 text-sm text-muted-foreground">
-                {product.description}
-              </p>
-            )}
-          </div>
+        <div className="mb-3">
+          <h3 className="font-display text-lg font-semibold leading-tight">{product.name}</h3>
+          {product.description && (
+            <p className="mt-1 line-clamp-2 text-sm text-muted-foreground">
+              {product.description}
+            </p>
+          )}
         </div>
 
         <div className="flex items-center justify-between">
@@ -90,7 +88,7 @@ const ProductCard = ({ product, index = 0 }: ProductCardProps) => {
             onClick={handleAddToCart}
             disabled={product.stock_quantity === 0}
             size="sm"
-            className="gap-2 bg-gradient-warm shadow-warm transition-all hover:scale-105"
+            className="gap-2 bg-gradient-nature shadow-nature transition-all hover:scale-105"
           >
             <Plus className="h-4 w-4" />
             Add

@@ -25,10 +25,10 @@ const ProductGrid = ({ products, isLoading }: ProductGridProps) => {
   if (!products || products.length === 0) {
     return (
       <div className="flex min-h-[300px] flex-col items-center justify-center rounded-2xl border border-dashed border-border bg-muted/30 p-8 text-center">
-        <span className="mb-4 text-6xl">🍽️</span>
-        <h3 className="font-display text-xl font-semibold">No dishes found</h3>
+        <span className="mb-4 text-6xl">🌿</span>
+        <h3 className="font-display text-xl font-semibold">No products found</h3>
         <p className="mt-2 text-muted-foreground">
-          Check back later for delicious offerings!
+          Check back later for healthy offerings!
         </p>
       </div>
     );

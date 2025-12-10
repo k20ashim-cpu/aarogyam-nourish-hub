@@ -22,18 +22,20 @@ import { useCart } from "@/hooks/useCart";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { Loader2 } from "lucide-react";
+import { useAuth } from "@/hooks/useAuth";
 
 const checkoutSchema = z.object({
-  name: z.string().min(2, "Name must be at least 2 characters"),
-  email: z.string().email("Invalid email address"),
-  phone: z.string().min(10, "Phone number must be at least 10 digits"),
-  address: z.string().min(10, "Please provide a complete address"),
+  name: z.string().min(2, "Name must be at least 2 characters").max(100),
+  email: z.string().email("Invalid email address").max(255),
+  phone: z.string().min(10, "Phone number must be at least 10 digits").max(15),
+  address: z.string().min(10, "Please provide a complete address").max(500),
 });
 
 type CheckoutFormData = z.infer<typeof checkoutSchema>;
 
 const Checkout = () => {
   const navigate = useNavigate();
+  const { user } = useAuth();
   const { items, totalPrice, clearCart } = useCart();
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -48,10 +50,21 @@ const Checkout = () => {
   });
 
   const formatPrice = (price: number) => {
-    return new Intl.NumberFormat("en-US", {
+    return new Intl.NumberFormat("en-IN", {
       style: "currency",
-      currency: "USD",
+      currency: "INR",
     }).format(price);
+  };
+
+  const sendWhatsAppNotification = (orderId: string, data: CheckoutFormData) => {
+    const orderItems = items
+      .map((item) => `• ${item.product.name} x${item.quantity} - ${formatPrice(Number(item.product.price) * item.quantity)}`)
+      .join("%0A");
+
+    const message = `🛒 *New Order Received!*%0A%0A*Order ID:* ${orderId.slice(0, 8)}%0A%0A*Customer Details:*%0AName: ${encodeURIComponent(data.name)}%0AEmail: ${encodeURIComponent(data.email)}%0APhone: ${encodeURIComponent(data.phone)}%0AAddress: ${encodeURIComponent(data.address)}%0A%0A*Order Items:*%0A${orderItems}%0A%0A*Total Amount:* ${formatPrice(totalPrice())}%0A%0A_Order placed at: ${new Date().toLocaleString("en-IN")}_`;
+
+    const whatsappUrl = `https://wa.me/917667227333?text=${message}`;
+    window.open(whatsappUrl, "_blank");
   };
 
   const onSubmit = async (data: CheckoutFormData) => {
@@ -63,9 +76,6 @@ const Checkout = () => {
     setIsSubmitting(true);
 
     try {
-      // Get current user (optional for guest checkout)
-      const { data: { user } } = await supabase.auth.getUser();
-
       // Create order
       const { data: order, error: orderError } = await supabase
         .from("orders")
@@ -99,6 +109,9 @@ const Checkout = () => {
 
       if (itemsError) throw itemsError;
 
+      // Send WhatsApp notification
+      sendWhatsAppNotification(order.id, data);
+
       clearCart();
       toast.success("Order placed successfully! 🎉");
       navigate("/order-success", { state: { orderId: order.id } });
@@ -120,7 +133,7 @@ const Checkout = () => {
       <main className="flex-1 py-8 md:py-12">
         <div className="container">
           <h1 className="mb-8 font-display text-3xl font-bold">
-            <span className="text-gradient-warm">Checkout</span>
+            <span className="text-gradient-nature">Checkout</span>
           </h1>
 
           <div className="grid gap-8 lg:grid-cols-3">
@@ -168,7 +181,7 @@ const Checkout = () => {
                             <FormItem>
                               <FormLabel>Phone Number</FormLabel>
                               <FormControl>
-                                <Input type="tel" placeholder="+1 (555) 123-4567" {...field} />
+                                <Input type="tel" placeholder="+91 98765 43210" {...field} />
                               </FormControl>
                               <FormMessage />
                             </FormItem>
@@ -184,7 +197,7 @@ const Checkout = () => {
                             <FormLabel>Delivery Address</FormLabel>
                             <FormControl>
                               <Textarea
-                                placeholder="123 Main St, Apt 4B, New York, NY 10001"
+                                placeholder="Enter your complete delivery address"
                                 className="min-h-[100px]"
                                 {...field}
                               />
@@ -197,7 +210,7 @@ const Checkout = () => {
                       <Button
                         type="submit"
                         disabled={isSubmitting}
-                        className="w-full gap-2 bg-gradient-warm shadow-warm"
+                        className="w-full gap-2 bg-gradient-nature shadow-nature"
                       >
                         {isSubmitting ? (
                           <>

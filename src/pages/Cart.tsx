@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Minus, Plus, Trash2, ShoppingBag, ArrowRight } from "lucide-react";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
@@ -11,9 +11,9 @@ const Cart = () => {
   const { items, updateQuantity, removeItem, totalPrice, clearCart } = useCart();
 
   const formatPrice = (price: number) => {
-    return new Intl.NumberFormat("en-US", {
+    return new Intl.NumberFormat("en-IN", {
       style: "currency",
-      currency: "USD",
+      currency: "INR",
     }).format(price);
   };
 
@@ -28,11 +28,11 @@ const Cart = () => {
             </div>
             <h1 className="font-display text-2xl font-bold">Your cart is empty</h1>
             <p className="mt-2 text-muted-foreground">
-              Add some delicious items to get started
+              Add some healthy products to get started
             </p>
             <Link to="/menu" className="mt-6 inline-block">
-              <Button className="gap-2 bg-gradient-warm shadow-warm">
-                Browse Menu
+              <Button className="gap-2 bg-gradient-nature shadow-nature">
+                Browse Products
                 <ArrowRight className="h-4 w-4" />
               </Button>
             </Link>
@@ -50,7 +50,7 @@ const Cart = () => {
         <div className="container">
           <div className="mb-8 flex items-center justify-between">
             <h1 className="font-display text-3xl font-bold">
-              Your <span className="text-gradient-warm">Cart</span>
+              Your <span className="text-gradient-nature">Cart</span>
             </h1>
             <Button variant="ghost" onClick={clearCart} className="text-destructive">
               Clear All
@@ -73,7 +73,7 @@ const Cart = () => {
                           />
                         ) : (
                           <div className="flex h-full w-full items-center justify-center">
-                            <span className="text-3xl">🍽️</span>
+                            <span className="text-3xl">🌿</span>
                           </div>
                         )}
                       </div>
@@ -141,7 +141,7 @@ const Cart = () => {
                     </div>
                     <div className="flex justify-between text-sm">
                       <span className="text-muted-foreground">Delivery</span>
-                      <span className="text-accent">Free</span>
+                      <span className="text-primary">Free</span>
                     </div>
                   </div>
 
@@ -153,7 +153,7 @@ const Cart = () => {
                   </div>
 
                   <Link to="/checkout" className="mt-6 block">
-                    <Button className="w-full gap-2 bg-gradient-warm shadow-warm">
+                    <Button className="w-full gap-2 bg-gradient-nature shadow-nature">
                       Proceed to Checkout
                       <ArrowRight className="h-4 w-4" />
                     </Button>
