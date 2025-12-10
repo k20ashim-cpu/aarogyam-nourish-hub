@@ -58,11 +58,6 @@ const Hero = ({ searchQuery, onSearchChange }: HeroProps) => {
                 <ArrowRight className="h-4 w-4" />
               </Button>
             </Link>
-            <Link to="/about">
-              <Button variant="outline" size="lg" className="px-8">
-                Our Story
-              </Button>
-            </Link>
           </div>
 
           {/* Features */}

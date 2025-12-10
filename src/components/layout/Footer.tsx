@@ -5,7 +5,7 @@ const Footer = () => {
   return (
     <footer className="border-t border-border bg-card">
       <div className="container py-12 md:py-16">
-        <div className="grid gap-8 md:grid-cols-4">
+        <div className="grid gap-8 md:grid-cols-3">
           {/* Brand */}
           <div className="space-y-4">
             <Link to="/" className="flex items-center gap-2">
@@ -33,17 +33,6 @@ const Footer = () => {
               <li><Link to="/menu" className="hover:text-foreground">Our Products</Link></li>
               <li><Link to="/about" className="hover:text-foreground">About Us</Link></li>
               <li><Link to="/contact" className="hover:text-foreground">Contact</Link></li>
-            </ul>
-          </div>
-
-          {/* Categories */}
-          <div className="space-y-4">
-            <h4 className="font-display font-semibold">Categories</h4>
-            <ul className="space-y-2 text-sm text-muted-foreground">
-              <li><Link to="/menu?category=grains" className="hover:text-foreground">Organic Grains</Link></li>
-              <li><Link to="/menu?category=oils" className="hover:text-foreground">Cold Pressed Oils</Link></li>
-              <li><Link to="/menu?category=spices" className="hover:text-foreground">Natural Spices</Link></li>
-              <li><Link to="/menu?category=honey" className="hover:text-foreground">Pure Honey</Link></li>
             </ul>
           </div>
 

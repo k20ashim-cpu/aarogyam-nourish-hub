@@ -253,7 +253,7 @@ const Checkout = () => {
                     </div>
                     <div className="flex justify-between text-sm">
                       <span className="text-muted-foreground">Delivery</span>
-                      <span className="text-accent">Free</span>
+                      <span className="text-muted-foreground">Based on your location</span>
                     </div>
                   </div>
 
