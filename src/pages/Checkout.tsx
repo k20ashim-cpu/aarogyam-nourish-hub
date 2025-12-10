@@ -76,11 +76,52 @@ const Checkout = () => {
     setIsSubmitting(true);
 
     try {
+      let userId = user?.id || null;
+
+      // If user is not logged in, create an account automatically
+      if (!userId) {
+        const tempPassword = `Temp${Date.now()}!${Math.random().toString(36).slice(2, 10)}`;
+        
+        const { data: authData, error: signUpError } = await supabase.auth.signUp({
+          email: data.email,
+          password: tempPassword,
+          options: {
+            emailRedirectTo: `${window.location.origin}/`,
+            data: {
+              full_name: data.name,
+            },
+          },
+        });
+
+        if (signUpError) {
+          // If user already exists, try to place order as guest
+          if (signUpError.message.includes("already registered")) {
+            toast.info("An account with this email exists. Placing order as guest.");
+          } else {
+            throw signUpError;
+          }
+        } else if (authData.user) {
+          userId = authData.user.id;
+          
+          // Update profile with checkout details
+          await supabase
+            .from("profiles")
+            .update({
+              full_name: data.name,
+              phone: data.phone,
+              address: data.address,
+            })
+            .eq("id", userId);
+
+          toast.info("Account created! Check your email to set a password.");
+        }
+      }
+
       // Create order
       const { data: order, error: orderError } = await supabase
         .from("orders")
         .insert({
-          user_id: user?.id || null,
+          user_id: userId,
           customer_name: data.name,
           customer_email: data.email,
           customer_phone: data.phone,
