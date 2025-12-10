@@ -24,14 +24,18 @@ import { toast } from "sonner";
 import { Loader2 } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 
-const checkoutSchema = z.object({
-  name: z.string().min(2, "Name must be at least 2 characters").max(100),
-  email: z.string().email("Invalid email address").max(255),
-  phone: z.string().min(10, "Phone number must be at least 10 digits").max(15),
-  address: z.string().min(10, "Please provide a complete address").max(500),
-});
+const createCheckoutSchema = (isGuest: boolean) =>
+  z.object({
+    name: z.string().min(2, "Name must be at least 2 characters").max(100),
+    email: z.string().email("Invalid email address").max(255),
+    phone: z.string().min(10, "Phone number must be at least 10 digits").max(15),
+    address: z.string().min(10, "Please provide a complete address").max(500),
+    password: isGuest
+      ? z.string().min(6, "Password must be at least 6 characters").max(100)
+      : z.string().optional(),
+  });
 
-type CheckoutFormData = z.infer<typeof checkoutSchema>;
+type CheckoutFormData = z.infer<ReturnType<typeof createCheckoutSchema>>;
 
 const Checkout = () => {
   const navigate = useNavigate();
@@ -39,13 +43,16 @@ const Checkout = () => {
   const { items, totalPrice, clearCart } = useCart();
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  const isGuest = !user;
+
   const form = useForm<CheckoutFormData>({
-    resolver: zodResolver(checkoutSchema),
+    resolver: zodResolver(createCheckoutSchema(isGuest)),
     defaultValues: {
       name: "",
       email: "",
       phone: "",
       address: "",
+      password: "",
     },
   });
 
@@ -79,12 +86,10 @@ const Checkout = () => {
       let userId = user?.id || null;
 
       // If user is not logged in, create an account automatically
-      if (!userId) {
-        const tempPassword = `Temp${Date.now()}!${Math.random().toString(36).slice(2, 10)}`;
-        
+      if (!userId && data.password) {
         const { data: authData, error: signUpError } = await supabase.auth.signUp({
           email: data.email,
-          password: tempPassword,
+          password: data.password,
           options: {
             emailRedirectTo: `${window.location.origin}/`,
             data: {
@@ -113,7 +118,7 @@ const Checkout = () => {
             })
             .eq("id", userId);
 
-          toast.info("Account created! Check your email to set a password.");
+          toast.success("Account created! You can now login with your email and password.");
         }
       }
 
@@ -247,6 +252,29 @@ const Checkout = () => {
                           </FormItem>
                         )}
                       />
+
+                      {isGuest && (
+                        <FormField
+                          control={form.control}
+                          name="password"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel>Create Password</FormLabel>
+                              <FormControl>
+                                <Input
+                                  type="password"
+                                  placeholder="Create a password for your account"
+                                  {...field}
+                                />
+                              </FormControl>
+                              <FormMessage />
+                              <p className="text-xs text-muted-foreground">
+                                This will create an account so you can track your orders
+                              </p>
+                            </FormItem>
+                          )}
+                        />
+                      )}
 
                       <Button
                         type="submit"
